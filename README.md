@@ -33,7 +33,7 @@ To learn more about what a CAPTCHA is, you can [watch this video](https://www.yo
 # What do the CAPTCHAs look like?
 Below is an image of what answering a CAPTCHA will look like when using the default settings:
 
-![Image of Captcha](src/images/example_captcha.png)
+![Image of Captcha](https://github.com/diamonddigitaldev/Discord.py-Captcha/blob/master/src/images/example_captcha.png)
 
 # Installation
 

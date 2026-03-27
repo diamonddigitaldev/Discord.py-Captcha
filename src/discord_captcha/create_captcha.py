@@ -60,7 +60,7 @@ def _create_captcha_sync(length: int, blacklist: str) -> CaptchaImageData:
     # Generate text
     text = "".join(secrets.choice(chars) for _ in range(length))
 
-    # Calculate font size (adaptive based on length)
+    # Calculate font size
     font_size = max(20, min(100, int(80 / (length / 7.5)) if length > 6 else 80))
     try:
         font = ImageFont.load_default(size=font_size)
@@ -78,10 +78,10 @@ def _create_captcha_sync(length: int, blacklist: str) -> CaptchaImageData:
     txt_draw.text((padding // 2, padding // 2), text, fill="black", font=font)
 
     # Rotate
-    angle = (random.random() - 0.5) * (180 / math.pi)  # ~same range as JS Math.random()-0.5 in radians converted
+    angle = (random.random() - 0.5) * (180 / math.pi)
     txt_img = txt_img.rotate(angle, expand=True, resample=Image.BICUBIC)
 
-    # Calculate paste position (centered with random offset, matching JS logic)
+    # Calculate paste position
     offset_x = round(random.random() * 100 - 50) + 200 - txt_img.width // 2
     offset_y = round(random.random() * (height / 4) - height / 8) + height // 2 - txt_img.height // 2
     offset_x = max(0, min(offset_x, width - txt_img.width))
