@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling >= 1.26"]
+build-backend = "hatchling.build"
+
+[project]
+name = "discord.py-captcha"
+version = "1.0.0"
+authors = [
+    { name = "Diamond Digital Development" },
+]
+description = "A powerful captcha verification package for discord.py bots."
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "Apache-2.0"
+license-files = ["LICEN[CS]E*"]
+dependencies = [
+    "discord.py>=2.0",
+    "Pillow>=10.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/discord_captcha"]
+
+[project.urls]
+Homepage = "https://github.com/DiamondDigitalDevelopment/discord.py-captcha"
+Issues = "https://github.com/DiamondDigitalDevelopment/discord.py-captcha/issues"
