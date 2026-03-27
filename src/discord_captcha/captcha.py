@@ -254,7 +254,7 @@ class Captcha:
                         except discord.Forbidden:
                             logger.warning("Missing permissions to assign role %s to %s in guild %s.", role.id, member, member.guild.id)
                     else:
-                        logger.warning("Role %s not found in guild %s — captcha passed but role not assigned.", self.options.role_id, member.guild.id)
+                        logger.warning("Role %s not found in guild %s - captcha passed but role not assigned.", self.options.role_id, member.guild.id)
 
                 await self._send_result(channel, captcha_message, success_embed, member, False, is_text_channel)
                 return True

@@ -92,14 +92,14 @@ All options are passed via `CaptchaOptions`. Every option has a default, so you 
 
 ## Example Configurations
 
-**Minimal** — just verify, no role, no kick:
+**Minimal** - just verify, no role, no kick:
 ```py
 captcha = Captcha(bot, CaptchaOptions(
     kick_on_failure=False,
 ))
 ```
 
-**Strict** — one attempt, case-sensitive, 15 second timeout:
+**Strict** - one attempt, case-sensitive, 15 second timeout:
 ```py
 captcha = Captcha(bot, CaptchaOptions(
     role_id=123456789,
@@ -109,7 +109,7 @@ captcha = Captcha(bot, CaptchaOptions(
 ))
 ```
 
-**Lenient** — multiple attempts, case-insensitive, sent in a channel:
+**Lenient** - multiple attempts, case-insensitive, sent in a channel:
 ```py
 captcha = Captcha(bot, CaptchaOptions(
     role_id=123456789,
@@ -186,15 +186,15 @@ Every callback receives a `CaptchaEventData` object with the following attribute
 
 ## Available Events
 
-**`on_prompt`** — Called when the CAPTCHA is first sent to the user, before they've had a chance to respond.
+**`on_prompt`** - Called when the CAPTCHA is first sent to the user, before they've had a chance to respond.
 
-**`on_answer`** — Called every time the user submits a response, whether it's correct or not. Useful for logging individual attempts.
+**`on_answer`** - Called every time the user submits a response, whether it's correct or not. Useful for logging individual attempts.
 
-**`on_success`** — Called when the user answers correctly. At this point the role has already been added (if configured).
+**`on_success`** - Called when the user answers correctly. At this point the role has already been added (if configured).
 
-**`on_failure`** — Called when the user exhausts all their attempts with wrong answers. At this point the user has already been kicked (if configured).
+**`on_failure`** - Called when the user exhausts all their attempts with wrong answers. At this point the user has already been kicked (if configured).
 
-**`on_timeout`** — Called when the user doesn't respond within the timeout window. At this point the user has already been kicked (if configured).
+**`on_timeout`** - Called when the user doesn't respond within the timeout window. At this point the user has already been kicked (if configured).
 
 ## Example
 
@@ -222,11 +222,14 @@ async def on_timeout(data):
 
 ## Contact Us
 
-- Need Help? [Join Our Discord Server](https://discord.gg/P2g24jp)!
+- 🎮 Need help or want to chat? [Join our Discord Server](https://diamonddigital.dev/discord)!
+- 🐛 Found a bug? [Open an issue](https://github.com/diamonddigitaldev/Discord.py-Captcha/issues) on our GitHub repository.
+- 💡 Have a feature request? [Submit it here](https://github.com/diamonddigitaldev/Discord.py-Captcha/issues/new?labels=enhancement)!
 
-- Found a Bug? [Open an Issue](https://github.com/diamonddigitaldev/Discord.py-Captcha/issues), or Fork and [Submit a Pull Request](https://github.com/diamonddigitaldev/Discord.py-Captcha/pulls) on our [GitHub Repository](https://github.com/diamonddigitaldev/Discord.py-Captcha)!
 <hr>
-<center>
-<a href="https://diamonddigital.dev/"><strong>Created and maintained by</strong>
-<img align="center" style="width:25%;height:auto" src="https://diamonddigital.dev/img/png/ddd_logo_text_transparent.png" alt="Diamond Digital Development Logo"></a>
-</center>
+
+<div align="center">
+  <a href="https://diamonddigital.dev/">
+  <strong>Created and maintained by</strong>
+  <img align="center" alt="Diamond Digital Development Logo" src="https://diamonddigital.dev/img/png/ddd_logo_text_transparent.png" style="width:25%;height:auto" /></a>
+</div>
