@@ -224,7 +224,7 @@ async def on_timeout(data):
 
 - Need Help? [Join Our Discord Server](https://discord.gg/P2g24jp)!
 
-- Found a Bug? [Open an Issue](https://github.com/DiamondDigitalDevelopment/discord.py-captcha/issues), or Fork and [Submit a Pull Request](https://github.com/DiamondDigitalDevelopment/discord.py-captcha/pulls) on our [GitHub Repository](https://github.com/DiamondDigitalDevelopment/discord.py-captcha)!
+- Found a Bug? [Open an Issue](https://github.com/diamonddigitaldev/Discord.py-Captcha/issues), or Fork and [Submit a Pull Request](https://github.com/diamonddigitaldev/Discord.py-Captcha/pulls) on our [GitHub Repository](https://github.com/diamonddigitaldev/Discord.py-Captcha)!
 <hr>
 <center>
 <a href="https://diamonddigital.dev/"><strong>Created and maintained by</strong>

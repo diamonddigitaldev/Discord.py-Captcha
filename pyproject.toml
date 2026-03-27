@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "discord.py-captcha"
-version = "1.0.0"
+version = "1.0.1"
 authors = [
     { name = "Diamond Digital Development" },
 ]
@@ -26,5 +26,5 @@ dependencies = [
 packages = ["src/discord_captcha"]
 
 [project.urls]
-Homepage = "https://github.com/DiamondDigitalDevelopment/discord.py-captcha"
-Issues = "https://github.com/DiamondDigitalDevelopment/discord.py-captcha/issues"
+Homepage = "https://github.com/diamonddigitaldev/Discord.py-Captcha"
+Issues = "https://github.com/diamonddigitaldev/Discord.py-Captcha/issues"
