@@ -1,17 +1,12 @@
 <h1 align="center">
-    Discord.py Captcha
+    🎓 Discord.py Captcha 🎓
 </h1>
 
-<center style="margin-bottom:1rem;">A powerful package for discord.py v2 that allows you to easily create CAPTCHAs for Discord Servers.</center>
+<center style="margin-bottom:1rem;">A powerful package for discord.py v2 that allows you to easily create CAPTCHAs for Discord servers.</center>
 
-<div align="center">
+[![PyPI](https://img.shields.io/pypi/v/discord.py-captcha?style=flat-square)](https://pypi.org/project/discord.py-captcha/) [![Discord Server](https://img.shields.io/discord/667479986214666272?logo=discord&logoColor=white&style=flat-square)](https://diamonddigital.dev/discord)
 
-  ![license](https://img.shields.io/badge/license-Apache%202.0-blue?style=flat-square)
-
-  [![discord](https://img.shields.io/discord/667479986214666272?logo=discord&logoColor=white&style=flat-square)](https://diamonddigital.dev/discord)
-  [![buy me a coffee](https://img.shields.io/badge/-Buy%20Me%20a%20Coffee-ffdd00?logo=Buy%20Me%20A%20Coffee&logoColor=000000&style=flat-square)](https://www.buymeacoffee.com/willtda)
-
-</div>
+<a href="https://www.buymeacoffee.com/willtda" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
 Creating a CAPTCHA system on Discord can be quite challenging for some, but it doesn't have to be that way. Discord.py Captcha handles everything for you, from CAPTCHA generation and sending, to handling user responses and validity.
 
@@ -22,214 +17,154 @@ Put simply, a **CAPTCHA** is a question you have to answer to prove you are not 
 **CAPTCHA** is an acronym for:
 
 **C**ompletely
+
 **A**utomated
+
 **P**ublic
+
 **T**uring Test (to tell)
+
 **C**omputers (and humans)
+
 **A**part
 
 To learn more about what a CAPTCHA is, you can [watch this video](https://www.youtube.com/watch?v=o1zNIm8GVPY&ab_channel=TomScott) by Tom Scott.
+
+# Install Package
+
+To install this awesome module, type the command shown below into your Terminal.
+
+`pip install discord.py-captcha`
+
+For versions 3.0.0 and above, you'll also need discord.py v2.
+
+`pip install discord.py`
+
+For versions **earlier than 3.0.0**, you'll need discord.py v1 instead. However it is recommended you update to gain access to more customisation options, as well as to patch bugs and security vulnerabilities!
+
+`pip install discord.py==1.7.3`
+
+# Example Code
+
+## Initial Setup:
+
+```py
+import discord
+from discord_captcha import Captcha, CaptchaOptions
+
+intents = discord.Intents.default()
+intents.message_content = True  #IMPORTANT: make sure you enable "Message Content Intent" in the dev portal!
+intents.members = True
+
+client = discord.Client(intents=intents)
+
+client.run("Discord Bot Token")
+
+captcha = Captcha(client, CaptchaOptions(
+    role_id=123456789, #optional. if provided, the role will be added on success
+    channel_id=987654321, #optional
+    send_to_text_channel=False, #optional, defaults to False
+    kick_on_failure=True, #optional, defaults to True. whether you want the bot to kick the user if the captcha is failed
+    case_sensitive=True, #optional, defaults to True. whether you want the captcha responses to be case-sensitive
+    attempts=3, #optional, defaults to 1. number of attempts before captcha is considered to be failed
+    timeout=30, #optional, defaults to 60. time the user has to solve the captcha on each attempt in seconds
+    show_attempt_count=True, #optional, defaults to True. whether to show the number of attempts left in embed footer
+    custom_prompt_embed=discord.Embed(), #customise the embed that will be sent to the user when the captcha is requested
+    custom_success_embed=discord.Embed(), #customise the embed that will be sent to the user when the captcha is solved
+    custom_failure_embed=discord.Embed(), #customise the embed that will be sent to the user when they fail to solve the captcha
+))
+```
+
+### <u>**`channel_id`** Option Explained</u>
+The `channel_id` option is the ID of the Discord Text Channel to Send the CAPTCHA to if the user's Direct Messages are locked.
+
+Use the option `send_to_text_channel`, and set it to `True` to always send the CAPTCHA to the Text Channel.
+
+### <u>**`send_to_text_channel`** Option Explained</u>
+The `send_to_text_channel` option determines whether you want the CAPTCHA to be sent to a specified Text Channel instead of Direct Messages, regardless of whether the user's DMs are locked.
+
+Use the option `channel_id` to specify the Text Channel.
+
+## Presenting a CAPTCHA to a Member (With Built-In CAPTCHA Creation):
+
+Discord.py Captcha can automatically create a CAPTCHA for you, if you don't want to create one yourself.
+
+**Note:** Built-In CAPTCHA Creation requires you to install the `Pillow` package. (`pip install Pillow`)
+
+```py
+@client.event
+async def on_member_join(member):
+    #in your bot application in the dev portal, make sure you have intents turned on!
+    await captcha.present(member) #captcha is created by the package, and sent to the member
+```
+
+## Presenting a CAPTCHA to a Member (With Custom CAPTCHA Image Data):
+
+Don't like how the automatically created CAPTCHA looks? Simply pass in your own `CaptchaImageData` to the `present` method! You can also use Discord.py Captcha's Built-In CAPTCHA Creation to create your own CAPTCHA, and pass that in instead. (More on this [below](#manually-creating-a-captcha))
+
+```py
+@client.event
+async def on_member_join(member):
+    #in your bot application in the dev portal, make sure you have intents turned on!
+    captcha_image_buffer = #custom image as bytes
+    captcha_image_text = #answer to the captcha as string
+    await captcha.present(member, CaptchaImageData(image=captcha_image_buffer, text=captcha_image_text))
+```
+
+**Note:** When displaying a CAPTCHA to the user, the CAPTCHA image will automatically be attached to the `custom_prompt_embed` for you.
+
+In addition, if you have the `show_attempt_count` option enabled, any embed footer text on the `custom_prompt_embed` will be overwritten with the number of attempts left.
+
+## Manually Creating a CAPTCHA
+
+You can use the `create_captcha` function to easily create your own CAPTCHA using Discord.py Captcha's Built-In CAPTCHA Creation. It also comes with broader control over the length of the CAPTCHA, and the characters you would like to use by using a blacklist.
+
+**Note:** Built-In CAPTCHA Creation uses `A-Z`, `a-z` and `0-9`.
+
+```py
+from discord_captcha import create_captcha
+
+async def example():
+    #creating a CAPTCHA with 4 characters, and EXCLUDING numbers
+    my_captcha = await create_captcha(4, "0123456789")
+    print(my_captcha)
+    # => CaptchaImageData(image=b'...', text='aBCd')
+
+    #create_captcha resolves to an object that can be passed into the present method
+    await captcha.present(member, my_captcha)
+```
+
+# CAPTCHA Events
+
+There are five events that you can use to log CAPTCHA actions, responses, and other details. They are:
+
+- `on_prompt` - Emitted when a CAPTCHA is presented to a user.
+- `on_answer` - Emitted when a user responds to a CAPTCHA.
+- `on_success` - Emitted when a CAPTCHA is successfully solved.
+- `on_failure` - Emitted when a CAPTCHA is failed to be solved.
+- `on_timeout` - Emitted when a user does not solve the CAPTCHA in time.
+
+All of these events are emitted by the `Captcha` class. Here's an example of how to use them:
+
+```py
+@captcha.on_success
+async def on_success(data):
+    print(f"A Member has Solved a CAPTCHA!")
+    print(data)
+```
 
 # What do the CAPTCHAs look like?
 Below is an image of what answering a CAPTCHA will look like when using the default settings:
 
 ![Image of Captcha](https://github.com/diamonddigitaldev/Discord.py-Captcha/blob/main/src/images/example_captcha.png)
 
-# Installation
+## Contact Me
 
-```
-pip install discord.py-captcha
-```
+- 👋 Need Help? [Join Our Discord Server](https://diamonddigital.dev/discord)!
 
-This will automatically install the required dependencies: **discord.py v2** and **Pillow**.
-
-# Quick Start
-
-```py
-import discord
-from discord.ext import commands
-from discord_captcha import Captcha, CaptchaOptions
-
-intents = discord.Intents.default()
-intents.message_content = True  # enable "Message Content Intent" in the dev portal!
-intents.members = True
-
-bot = commands.Bot(command_prefix="!", intents=intents)
-
-captcha = Captcha(bot, CaptchaOptions(
-    role_id=123456789,
-    channel_id=987654321,
-    attempts=3,
-    timeout=30,
-))
-
-@bot.event
-async def on_member_join(member):
-    await captcha.present(member)
-
-bot.run("YOUR_BOT_TOKEN")
-```
-
-# Configuration
-
-All options are passed via `CaptchaOptions`. Every option has a default, so you only need to set the ones you want to change.
-
-## Options Reference
-
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `role_id` | `int \| None` | `None` | The ID of the role to give the user when they solve the CAPTCHA. If `None`, no role is added. |
-| `channel_id` | `int \| None` | `None` | The ID of a text channel to use as a fallback if the user's DMs are closed. If `send_to_text_channel` is `True`, the CAPTCHA is always sent here instead of DMs. Required if `send_to_text_channel` is `True`. |
-| `send_to_text_channel` | `bool` | `False` | When `True`, the CAPTCHA is always sent to the text channel specified by `channel_id`, bypassing DMs entirely. When `False`, the bot tries DMs first and only falls back to the text channel if DMs are locked. |
-| `kick_on_failure` | `bool` | `True` | Whether to automatically kick the user from the server if they fail the CAPTCHA or run out of time. |
-| `case_sensitive` | `bool` | `True` | Whether the user's answer must match the exact casing of the CAPTCHA text. When `False`, the CAPTCHA only generates lowercase characters and answers are compared case-insensitively. |
-| `attempts` | `int` | `1` | How many tries the user gets to solve the CAPTCHA before it counts as a failure. Each attempt has its own timeout window. |
-| `timeout` | `float` | `60.0` | How many seconds the user has to respond on each attempt before it times out. |
-| `show_attempt_count` | `bool` | `True` | Whether to display the remaining number of attempts in the embed footer. When the user only has one attempt, it shows "You have one attempt to solve the CAPTCHA." instead of a counter. |
-| `custom_prompt_embed` | `discord.Embed \| None` | `None` | A custom embed to use for the CAPTCHA prompt message. If not provided, a default embed is used. The CAPTCHA image is automatically attached regardless. If `show_attempt_count` is enabled, the footer will be overwritten with the attempt counter. |
-| `custom_success_embed` | `discord.Embed \| None` | `None` | A custom embed to show when the user solves the CAPTCHA. If not provided, a default green "CAPTCHA Solved!" embed is used. |
-| `custom_failure_embed` | `discord.Embed \| None` | `None` | A custom embed to show when the user fails the CAPTCHA (wrong answers or timeout). If not provided, a default red "You Failed to Complete the CAPTCHA!" embed is used. The correct answer is shown in the default embed. |
-
-## Example Configurations
-
-**Minimal** - just verify, no role, no kick:
-```py
-captcha = Captcha(bot, CaptchaOptions(
-    kick_on_failure=False,
-))
-```
-
-**Strict** - one attempt, case-sensitive, 15 second timeout:
-```py
-captcha = Captcha(bot, CaptchaOptions(
-    role_id=123456789,
-    attempts=1,
-    timeout=15,
-    case_sensitive=True,
-))
-```
-
-**Lenient** - multiple attempts, case-insensitive, sent in a channel:
-```py
-captcha = Captcha(bot, CaptchaOptions(
-    role_id=123456789,
-    channel_id=987654321,
-    send_to_text_channel=True,
-    case_sensitive=False,
-    attempts=5,
-    timeout=120,
-    kick_on_failure=False,
-))
-```
-
-# Usage
-
-## Presenting a CAPTCHA (Built-In Generation)
-
-The simplest way to use this package. A CAPTCHA image is generated automatically and sent to the user.
-
-```py
-@bot.event
-async def on_member_join(member):
-    result = await captcha.present(member)
-    # result is True if solved, False if failed/timed out
-```
-
-## Presenting a CAPTCHA (Custom Image)
-
-If you want to provide your own CAPTCHA image, pass a `CaptchaImageData` object to `present`:
-
-```py
-from discord_captcha import CaptchaImageData
-
-@bot.event
-async def on_member_join(member):
-    with open("my_captcha.png", "rb") as f:
-        image_bytes = f.read()
-
-    await captcha.present(member, CaptchaImageData(
-        image=image_bytes,
-        text="the_answer"
-    ))
-```
-
-## Manually Creating a CAPTCHA
-
-You can use the `create_captcha` function to generate a CAPTCHA image without presenting it. This gives you control over the character length and which characters to exclude.
-
-The character pool is `A-Z`, `a-z`, and `0-9` by default. Pass a `blacklist` string to exclude specific characters.
-
-```py
-from discord_captcha import create_captcha
-
-# 4 characters, no numbers
-my_captcha = await create_captcha(4, blacklist="0123456789")
-# => CaptchaImageData(image=b'...', text='aBCd')
-
-# pass it to present
-await captcha.present(member, my_captcha)
-```
-
-# Events
-
-Events let you hook into the CAPTCHA lifecycle for logging, analytics, or custom behavior. Register them as decorator callbacks on the `Captcha` instance.
-
-Every callback receives a `CaptchaEventData` object with the following attributes:
-
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `member` | `discord.Member` | The member who is being presented the CAPTCHA. |
-| `captcha_text` | `str` | The correct answer to the CAPTCHA. |
-| `captcha_options` | `CaptchaOptions` | The options the CAPTCHA was configured with. |
-| `responses` | `list[str]` | All answers the user has submitted so far. Empty for `on_prompt`. |
-| `attempts` | `int` | How many attempts have been taken so far. `0` for `on_prompt`. |
-
-## Available Events
-
-**`on_prompt`** - Called when the CAPTCHA is first sent to the user, before they've had a chance to respond.
-
-**`on_answer`** - Called every time the user submits a response, whether it's correct or not. Useful for logging individual attempts.
-
-**`on_success`** - Called when the user answers correctly. At this point the role has already been added (if configured).
-
-**`on_failure`** - Called when the user exhausts all their attempts with wrong answers. At this point the user has already been kicked (if configured).
-
-**`on_timeout`** - Called when the user doesn't respond within the timeout window. At this point the user has already been kicked (if configured).
-
-## Example
-
-```py
-@captcha.on_prompt
-async def on_prompt(data):
-    print(f"CAPTCHA sent to {data.member} (answer: {data.captcha_text})")
-
-@captcha.on_answer
-async def on_answer(data):
-    print(f"{data.member} answered: {data.responses[-1]} (attempt {data.attempts})")
-
-@captcha.on_success
-async def on_success(data):
-    print(f"{data.member} solved it in {data.attempts} attempt(s)")
-
-@captcha.on_failure
-async def on_failure(data):
-    print(f"{data.member} failed after {data.attempts} attempt(s). Answers: {data.responses}")
-
-@captcha.on_timeout
-async def on_timeout(data):
-    print(f"{data.member} didn't respond in time")
-```
-
-## Contact Us
-
-- 🎮 Need help or want to chat? [Join our Discord Server](https://diamonddigital.dev/discord)!
-- 🐛 Found a bug? [Open an issue](https://github.com/diamonddigitaldev/Discord.py-Captcha/issues) on our GitHub repository.
-- 💡 Have a feature request? [Submit it here](https://github.com/diamonddigitaldev/Discord.py-Captcha/issues/new?labels=enhancement)!
-
+- 👾 Found a Bug? [Open an Issue](https://github.com/diamonddigitaldev/Discord.py-Captcha/issues), or Fork and [Submit a Pull Request](https://github.com/diamonddigitaldev/Discord.py-Captcha/pulls) on our [GitHub Repository](https://github.com/diamonddigitaldev/Discord.py-Captcha)!
 <hr>
-
-<div align="center">
-  <a href="https://diamonddigital.dev/">
-  <strong>Created and maintained by</strong>
-  <img align="center" alt="Diamond Digital Development Logo" src="https://diamonddigital.dev/img/png/ddd_logo_text_transparent.png" style="width:25%;height:auto" /></a>
-</div>
+<center>
+<a href="https://diamonddigital.dev/"><strong>Created and maintained by</strong>
+<img align="center" style="width:25%;height:auto" src="https://diamonddigital.dev/img/png/ddd_logo_text_transparent.png" alt="Diamond Digital Development Logo"></a>
+</center>
