@@ -36,31 +36,22 @@ To install this awesome module, type the command shown below into your Terminal.
 
 `pip install discord.py-captcha`
 
-For versions 3.0.0 and above, you'll also need discord.py v2.
-
-`pip install discord.py`
-
-For versions **earlier than 3.0.0**, you'll need discord.py v1 instead. However it is recommended you update to gain access to more customisation options, as well as to patch bugs and security vulnerabilities!
-
-`pip install discord.py==1.7.3`
-
 # Example Code
 
 ## Initial Setup:
 
 ```py
 import discord
+from discord.ext import commands
 from discord_captcha import Captcha, CaptchaOptions
 
 intents = discord.Intents.default()
 intents.message_content = True  #IMPORTANT: make sure you enable "Message Content Intent" in the dev portal!
 intents.members = True
 
-client = discord.Client(intents=intents)
+bot = commands.Bot(command_prefix="!", intents=intents)
 
-client.run("Discord Bot Token")
-
-captcha = Captcha(client, CaptchaOptions(
+captcha = Captcha(bot, CaptchaOptions(
     role_id=123456789, #optional. if provided, the role will be added on success
     channel_id=987654321, #optional
     send_to_text_channel=False, #optional, defaults to False
@@ -73,6 +64,8 @@ captcha = Captcha(client, CaptchaOptions(
     custom_success_embed=discord.Embed(), #customise the embed that will be sent to the user when the captcha is solved
     custom_failure_embed=discord.Embed(), #customise the embed that will be sent to the user when they fail to solve the captcha
 ))
+
+bot.run("Discord Bot Token")
 ```
 
 ### <u>**`channel_id`** Option Explained</u>
@@ -89,10 +82,8 @@ Use the option `channel_id` to specify the Text Channel.
 
 Discord.py Captcha can automatically create a CAPTCHA for you, if you don't want to create one yourself.
 
-**Note:** Built-In CAPTCHA Creation requires you to install the `Pillow` package. (`pip install Pillow`)
-
 ```py
-@client.event
+@bot.event
 async def on_member_join(member):
     #in your bot application in the dev portal, make sure you have intents turned on!
     await captcha.present(member) #captcha is created by the package, and sent to the member
@@ -103,7 +94,7 @@ async def on_member_join(member):
 Don't like how the automatically created CAPTCHA looks? Simply pass in your own `CaptchaImageData` to the `present` method! You can also use Discord.py Captcha's Built-In CAPTCHA Creation to create your own CAPTCHA, and pass that in instead. (More on this [below](#manually-creating-a-captcha))
 
 ```py
-@client.event
+@bot.event
 async def on_member_join(member):
     #in your bot application in the dev portal, make sure you have intents turned on!
     captcha_image_buffer = #custom image as bytes
@@ -156,7 +147,7 @@ async def on_success(data):
 # What do the CAPTCHAs look like?
 Below is an image of what answering a CAPTCHA will look like when using the default settings:
 
-![Image of Captcha](https://github.com/diamonddigitaldev/Discord.py-Captcha/blob/main/src/images/example_captcha.png)
+![Image of Captcha](https://github.com/diamonddigitaldev/Discord.py-Captcha/blob/master/src/images/example_captcha.png)
 
 ## Contact Me
 
@@ -165,6 +156,6 @@ Below is an image of what answering a CAPTCHA will look like when using the defa
 - 👾 Found a Bug? [Open an Issue](https://github.com/diamonddigitaldev/Discord.py-Captcha/issues), or Fork and [Submit a Pull Request](https://github.com/diamonddigitaldev/Discord.py-Captcha/pulls) on our [GitHub Repository](https://github.com/diamonddigitaldev/Discord.py-Captcha)!
 <hr>
 <center>
-<a href="https://diamonddigital.dev/"><strong>Created and maintained by</strong>
+<a href="https://diamonddigital.dev/"><strong>Created and mastertained by</strong>
 <img align="center" style="width:25%;height:auto" src="https://diamonddigital.dev/img/png/ddd_logo_text_transparent.png" alt="Diamond Digital Development Logo"></a>
 </center>
