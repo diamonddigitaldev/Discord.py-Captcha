@@ -9,6 +9,7 @@ from typing import Awaitable, Callable
 import discord
 from discord.ext import commands
 
+from .errors import CaptchaError
 from .channel import resolve_channel
 from .create_captcha import CaptchaImageData, create_captcha
 
@@ -52,13 +53,11 @@ class Captcha:
             options = CaptchaOptions(**kwargs)
 
         if options.send_to_text_channel and not options.channel_id:
-            raise ValueError(
-                'Option "send_to_text_channel" was set to True, but "channel_id" was not provided.'
-            )
+            raise CaptchaError('Option "send_to_text_channel" was set to True, but "channel_id" was not provided.')
         if options.attempts < 1:
-            raise ValueError('Option "attempts" must be greater than 0.')
+            raise CaptchaError('Option "attempts" must be greater than 0.')
         if options.timeout < 1:
-            raise ValueError('Option "timeout" must be greater than 0.')
+            raise CaptchaError('Option "timeout" must be greater than 0.')
 
         self.bot = bot
         self.options = options
@@ -133,9 +132,9 @@ class Captcha:
     ) -> bool:
         if custom_captcha:
             if not isinstance(custom_captcha.image, bytes):
-                raise ValueError("Custom captcha image must be bytes.")
+                raise CaptchaError("Custom captcha image must be bytes.")
             if not isinstance(custom_captcha.text, str):
-                raise ValueError("Custom captcha text must be a string.")
+                raise CaptchaError("Custom captcha text must be a string.")
 
         captcha_data = custom_captcha or await create_captcha(
             6,

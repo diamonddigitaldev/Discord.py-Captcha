@@ -4,11 +4,11 @@ build-backend = "hatchling.build"
 
 [project]
 name = "discord.py-captcha"
-version = "1.0.2"
+version = "1.0.3"
 authors = [
     { name = "Diamond Digital Development" },
 ]
-description = "A powerful captcha verification package for discord.py bots."
+description = "A powerful package for discord.py v2 that allows you to easily create CAPTCHAs for Discord servers."
 readme = "README.md"
 requires-python = ">=3.10"
 classifiers = [

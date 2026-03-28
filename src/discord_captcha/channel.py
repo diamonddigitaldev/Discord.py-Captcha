@@ -8,6 +8,8 @@ import discord
 if TYPE_CHECKING:
     from .captcha import CaptchaOptions
 
+from .errors import CaptchaError
+
 logger = logging.getLogger(__name__)
 
 
@@ -27,6 +29,4 @@ async def resolve_channel(
         if options.channel_id:
             channel = member.guild.get_channel(options.channel_id) or await bot.fetch_channel(options.channel_id)
             return channel
-        raise ValueError(
-            "Cannot send captcha: user's DMs are locked and no fallback channel_id was provided."
-        )
+        raise CaptchaError("Cannot send captcha: user's DMs are locked and no fallback channel_id was provided.")

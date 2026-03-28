@@ -10,6 +10,8 @@ from dataclasses import dataclass
 
 from PIL import Image, ImageDraw, ImageFont
 
+from .errors import CaptchaError
+
 @dataclass
 class CaptchaImageData:
     image: bytes
@@ -111,16 +113,16 @@ def _create_captcha_sync(length: int, blacklist: str) -> CaptchaImageData:
 
 async def create_captcha(length: int = 6, blacklist: str = "") -> CaptchaImageData:
     if not isinstance(length, int) or length < 1:
-        raise ValueError("Length must be an integer greater than 0.")
+        raise CaptchaError("Length must be an integer greater than 0.")
     
     if not isinstance(blacklist, str):
-        raise ValueError("Blacklist must be a string.")
+        raise CaptchaError("Blacklist must be a string.")
     
     if blacklist and not all(c.isalnum() for c in blacklist):
-        raise ValueError("Blacklist must only contain alphanumeric characters.")
+        raise CaptchaError("Blacklist must only contain alphanumeric characters.")
 
     pool = [c for c in string.ascii_letters + string.digits if c not in blacklist]
     if not pool:
-        raise ValueError("Blacklist excludes all available characters.")
+        raise CaptchaError("Blacklist excludes all available characters.")
 
     return await asyncio.to_thread(_create_captcha_sync, length, blacklist)
