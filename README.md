@@ -156,6 +156,6 @@ Below is an image of what answering a CAPTCHA will look like when using the defa
 - 👾 Found a Bug? [Open an Issue](https://github.com/diamonddigitaldev/Discord.py-Captcha/issues), or Fork and [Submit a Pull Request](https://github.com/diamonddigitaldev/Discord.py-Captcha/pulls) on our [GitHub Repository](https://github.com/diamonddigitaldev/Discord.py-Captcha)!
 <hr>
 <center>
-<a href="https://diamonddigital.dev/"><strong>Created and mastertained by</strong>
+<a href="https://diamonddigital.dev/"><strong>Created and maintained by</strong>
 <img align="center" style="width:25%;height:auto" src="https://diamonddigital.dev/img/png/ddd_logo_text_transparent.png" alt="Diamond Digital Development Logo"></a>
 </center>
