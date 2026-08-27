@@ -149,6 +149,13 @@ Below is an image of what answering a CAPTCHA will look like when using the defa
 
 ![Image of Captcha](https://github.com/diamonddigitaldev/Discord.py-Captcha/blob/master/src/images/example_captcha.png)
 
+
+## Acknowledgements
+
+### AI Disclosure
+
+This project uses AI tools to aid development. Read our [AI Transparency & Quality Commitment](https://diamonddigital.dev/ai-transparency) statement for more information.
+
 ## Contact Me
 
 - 👋 Need Help? [Join Our Discord Server](https://diamonddigital.dev/discord)!
